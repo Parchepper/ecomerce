@@ -1,0 +1,575 @@
+/* styles.css */
+
+
+
+/* Resetting margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Setting base font */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+}
+
+.main-content {
+    padding-top: 50px; /* Adjust this value to match your navbar's height */
+}
+
+/* Splash Container */
+.splash-container {
+    background: linear-gradient(to right, #1e3c72, #2a5298); /* Blue gradient */
+    /* Alternatively, use a background image:
+    background: url('path-to-your-image.jpg') no-repeat center center/cover;
+    */
+    height: 120vh; /* Full viewport height */
+    margin-top: 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Splash Content */
+.splash-content {
+    text-align: center;
+    color: #fff;
+    animation: fadeIn 2s ease-in;
+}
+
+.logo {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: slideDown 1s ease-out;
+}
+
+.tagline {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    animation: slideUp 1s ease-out;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn {
+    text-decoration: none;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.btn-register {
+    background: transparent;
+}
+
+.btn-login {
+    background: #fff;
+    color: #1e3c72;
+}
+
+.btn:hover {
+    background: #fff;
+    color: #1e3c72;
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* styles.css */
+
+/* ... Existing styles ... */
+
+/* Form Container */
+.form-container {
+    
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Form Content */
+.form-content {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.form-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #1e3c72;
+    font-size: 2rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group input:focus {
+    border-color: #1e3c72;
+    outline: none;
+}
+
+.btn-submit {
+    background: #1e3c72;
+    color: #fff;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-submit:hover {
+    background: #16385b;
+}
+
+.form-text {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.form-text a {
+    color: #1e3c72;
+    text-decoration: none;
+}
+
+.form-text a:hover {
+    text-decoration: underline;
+}
+
+/* Input focus effect */
+.form-group input:focus {
+    border-color: #1e3c72;
+    box-shadow: 0 0 5px rgba(30, 60, 114, 0.5);
+}
+
+/* Responsive Form */
+@media (max-width: 768px) {
+    .form-content {
+        padding: 1.5rem;
+    }
+
+    .form-title {
+        font-size: 1.75rem;
+    }
+
+    .btn-submit {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-content {
+        padding: 1rem;
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* styles.css */
+
+/* ... Existing styles ... */
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Set a fixed height */
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #d27f20;
+    padding: 0 1rem; /* Adjust horizontal padding */
+    color: #ecf0f1;
+}
+   
+
+.navbar a {
+    color: #ecf0f1;
+    text-decoration: none;
+    margin-left: 1rem;
+    transition: color 0.3s;
+}
+
+.navbar a:hover {
+    color: #bdc3c7;
+}
+
+.navbar-brand a {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn-add-to-cart {
+    padding: 0.5rem 1rem;
+    background: #e67e22; /* Orange color for contrast */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.btn-add-to-cart:hover {
+    background: #d35400;
+}
+
+/* Filter Button */
+#filter-btn {
+    padding: 0.5rem 1rem;
+    background: #2980b9; /* Blue color for industrial theme */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+#filter-btn:hover {
+    background: #1f6391;
+}
+
+
+
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.product-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+
+.product-card:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 1rem;
+}
+
+.product-info h3 {
+    margin-bottom: 0.5rem;
+}
+
+.product-info p {
+    margin-bottom: 1rem;
+}
+
+.product-info .price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1e3c72;
+}
+
+.product-info .btn-add-to-cart {
+    padding: 0.5rem 1rem;
+    background: #1e3c72;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.product-info .btn-add-to-cart:hover {
+    background: #16385b;
+}
+/* Responsive Products Grid */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* styles.css */
+
+/* ... Existing styles ... */
+
+/* Carousel Styles */
+.carousel-container {
+    position: relative;
+    margin: 20px auto;
+    max-width: 1200px;
+    overflow: hidden;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    position: relative;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 400px; /* Set a fixed height for consistency */
+    object-fit: cover; /* Ensures the image covers the container */
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    background: rgba(0,0,0,0.6);
+    padding: 15px 20px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Carousel Controls */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.carousel-control.prev {
+    left: 20px;
+}
+
+.carousel-control.next {
+    right: 20px;
+}
+
+/* Marketing Section Styles */
+.marketing-section {
+    display: flex;
+    justify-content: space-between;
+    margin: 40px auto;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+.marketing-image {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.marketing-image img {
+    width: 100%;
+    height: 250px; /* Fixed height for consistency */
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.marketing-image img:hover {
+    transform: scale(1.05);
+}
+
+/* Adjusting Padding for Advertisements */
+.container {
+    padding: 40px 20px; /* Increased top padding for spacing */
+}
+
+/* Products Grid Adjustments */
+.products-grid {
+    margin-top: 40px;
+}
+
+/* Responsive Design for Carousel and Marketing Section */
+@media (max-width: 992px) {
+    .carousel-slide img {
+        height: 300px;
+    }
+    
+    .marketing-image img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-container {
+        max-width: 100%;
+    }
+
+    .carousel-slide img {
+        height: 250px;
+    }
+
+    .marketing-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .marketing-image {
+        margin: 10px 0;
+    }
+
+    .marketing-image img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-slide img {
+        height: 200px;
+    }
+
+    .marketing-image img {
+        height: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        height: 50px;
+    }
+    .main-content {
+        padding-top: 50px;
+    }
+}
+
+/* Product Detail Page Styles */
+
+.product-detail-card {
+    display: flex;
+    margin: 40px auto;
+    max-width: 1200px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.product-detail-image {
+    width: 50%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.product-detail-info {
+    padding: 20px;
+    width: 50%;
+}
+
+.product-detail-info h1 {
+    margin-bottom: 1rem;
+}
+
+.product-detail-info .price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e3c72;
+    margin-bottom: 1rem;
+}
+
+.product-detail-info p {
+    margin-bottom: 1rem;
+}
+
+.product-detail-info .btn-add-to-cart {
+    padding: 0.75rem 1.5rem;
+    background: #1e3c72;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 1rem;
+}
+
+.product-detail-info .btn-add-to-cart:hover {
+    background: #16385b;
+}
+
+@media (max-width: 768px) {
+    .product-detail-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-detail-image,
+    .product-detail-info {
+        width: 100%;
+    }
+
+    .product-detail-image {
+        margin-bottom: 20px;
+    }
+}
+

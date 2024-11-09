@@ -1,0 +1,67 @@
+<!-- profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile - E-Commerce Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="index.html">E-Commerce Platform</a>
+        </div>
+        <div class="navbar-menu" id="navbar-menu">
+            <!-- Links populated by JavaScript -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="profile-container">
+            <h1>My Profile</h1>
+            <!-- Display current profile data -->
+            <div id="profile-data">
+                <p>First Name: <span id="first_name"></span></p>
+                <p>Last Name: <span id="last_name"></span></p>
+                <p>Email: <span id="email"></span></p>
+                <p>Phone: <span id="phone_number"></span></p>
+                <p>Billing Address: <span id="billing_address"></span></p>
+            </div>
+            <!-- Edit button -->
+            <button id="edit-button" onclick="handleEditButtonClick()" class="btn btn-edit">Edit Profile</button>
+            <!-- Form to edit profile data -->
+            <form id="profile-form" class="form" style="display: none;">
+                <!-- Profile fields will be populated by JavaScript -->
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" name="first_name" id="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" name="last_name" id="last_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required disabled>
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Phone:</label>
+                    <input type="text" name="phone_number" id="phone_number">
+                </div>
+                <div class="form-group">
+                    <label for="">billing_address:</label>
+                    <textarea name="billing_address" id="billing_address"></textarea>
+                </div>
+                <!-- Add additional fields as needed -->
+                <button type="submit" class="btn btn-submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+  
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!-- products.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products - Industrial Supply Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="index.html">LEVAC    </a>
+        </div>
+        <div class="navbar-menu" id="navbar-menu">
+            <!-- Links will be populated by JavaScript -->
+        </div>
+    </nav>
+
+    <div class="main-content">
+
+    
+
+    <!-- Carousel Section -->
+    <div class="carousel-container">
+        <div class="carousel">
+            <div class="carousel-slide">
+                <a href="#"> <!-- Placeholder link -->
+                    <img src="images/placeholder1.jpg" alt="Carousel Image 1">
+                    <div class="carousel-caption">High-Quality Tools</div>
+                </a>
+            </div>
+            <div class="carousel-slide">
+                <a href="#">
+                    <img src="images/placeholder2.jpg" alt="Carousel Image 2">
+                    <div class="carousel-caption">Safety Equipment</div>
+                </a>
+            </div>
+            <div class="carousel-slide">
+                <a href="#">
+                    <img src="images/placeholder3.jpg" alt="Carousel Image 3">
+                    <div class="carousel-caption">Industrial Supplies</div>
+                </a>
+            </div>
+        </div>
+        <!-- Carousel Controls -->
+        <button class="carousel-control prev">&#10094;</button>
+        <button class="carousel-control next">&#10095;</button>
+    </div>
+
+    <!-- Marketing Images and Advertisements -->
+    <div class="marketing-section">
+        <div class="marketing-image">
+            <a href="#">
+                <img src="images/marketing-placeholder1.jpg" alt="Marketing Image 1">
+            </a>
+        </div>
+        <div class="marketing-image">
+            <a href="#">
+                <img src="images/marketing-placeholder2.jpg" alt="Marketing Image 2">
+            </a>
+        </div>
+        <div class="marketing-image">
+            <a href="#">
+                <img src="images/marketing-placeholder3.jpg" alt="Marketing Image 3">
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Search and Filters -->
+        <div class="search-filters">
+            <input type="text" id="search-input" placeholder="Search products...">
+            <select id="category-filter">
+                <option value="">All Categories</option>
+                <!-- Categories will be populated dynamically -->
+            </select>
+            <div class="price-filter">
+                <input type="number" id="min-price" placeholder="Min Price">
+                <input type="number" id="max-price" placeholder="Max Price">
+                <button id="filter-btn">Filter</button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="products-grid">
+            <!-- Products will be displayed here -->
+        </div>
+    </div>
+    
+    
+    
+    </div>
+    <script src="js/cache.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/carousel.js"></script>
+</body>
+</html>
