@@ -113,7 +113,7 @@ function displayProducts(products) {
                 <div class="product-info">
                     <h3>${product.name}</h3>
                     <p>${product.description}</p>
-                    <p class="price">$${product.price.toFixed(2)}</p>
+                    <p class="price">$${product.price}</p>
                 </div>
             </a>
             <button class="add-to-cart-button" data-product-id="${product.product_id}">Add to Cart</button>

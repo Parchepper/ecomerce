@@ -104,7 +104,8 @@ class Order(db.Model):
     total_amount = db.Column(db.Numeric(10, 2), nullable=False)
     shipping_method = db.Column(db.String(100))
     tracking_number = db.Column(db.String(100))
-    
+    sales_tax = db.Column(db.Numeric(10, 2), nullable=False, default=0.00)
+    shipping_cost = db.Column(db.Numeric(10, 2), nullable=False, default=0.00)    
     order_date = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

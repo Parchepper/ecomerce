@@ -157,3 +157,33 @@ async function removeCartItem(productId) {
         console.error('Error removing cart item:', error);
     }
 }
+
+document.getElementById('proceed-to-checkout').addEventListener('click', proceedToCheckout);
+const token = localStorage.getItem("token")
+const apiUrl = (`${API_BASE_URL}/orders`);
+
+function proceedToCheckout() {
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            // Include authentication headers if required
+        },
+    })
+    .then(response =>  response.json())
+    .then(orderData => {
+        // Redirect to checkout page or display order summary
+        displayOrderSummary(orderData);
+    })
+    .catch(error => {
+        console.error('Error during checkout:', error);
+        alert('An error occurred during checkout.');
+    });
+}
+
+function displayOrderSummary(orderData) {
+    console.log("TESTING", orderData);
+    // Redirect to the checkout page with the order ID in the URL parameters
+    window.location.href = '/checkout.html?order_id=' + orderData.order_id;
+}

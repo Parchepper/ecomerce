@@ -77,3 +77,5 @@ class CartResource(Resource):
         cart_item.quantity = quantity
         db.session.commit()
         return cart_item_schema.dump(cart_item), 200
+    
+

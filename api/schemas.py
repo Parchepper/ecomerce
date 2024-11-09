@@ -76,23 +76,34 @@ class CustomerSchema(SQLAlchemyAutoSchema):
 
     password = fields.String(load_only=True)  # For registration and login
 
-### Order Schema
-
-class OrderSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Order
-        load_instance = True
-        include_fk = True
-
-    order_items = fields.Nested('OrderItemSchema', many=True)
 
 ### OrderItem Schema
 
 class OrderItemSchema(SQLAlchemyAutoSchema):
+    product = fields.Nested(ProductSchema)
+    unit_price = DecimalAsFloat()
+    total_price = DecimalAsFloat()
+
     class Meta:
         model = OrderItem
         load_instance = True
         include_fk = True
+        include_relationships = True
+
+### Order Schema
+class OrderSchema(SQLAlchemyAutoSchema):
+    order_items = fields.Nested(OrderItemSchema, many=True)
+    total_amount = DecimalAsFloat()
+    sales_tax = DecimalAsFloat()
+    shipping_cost = DecimalAsFloat()
+
+    class Meta:
+        model = Order
+        load_instance = True
+        include_fk = True
+        include_relationships = True
+
+
 
 ### Cart Schema
 

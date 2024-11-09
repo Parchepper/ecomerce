@@ -1,4 +1,5 @@
 from flask import Flask, make_response
+from flask_migrate import Migrate
 from flask_restful import Api
 from config import Config
 from extensions import db, jwt
@@ -7,6 +8,7 @@ from resources.category import CategoryListResource, CategoryResource
 from resources.auth import RegisterResource, LoginResource
 from resources.customer import CustomerProfileResource
 from resources.cart import CartResource
+from resources.orders import OrderResource
 # Import other resources...
 
 from flask_cors import CORS
@@ -24,6 +26,7 @@ def create_app():
 
     db.init_app(app)
     jwt.init_app(app)
+    migrate = Migrate(app, db)
 
     api = Api(app)
 
@@ -39,6 +42,7 @@ def create_app():
     api.add_resource(LoginResource, '/api/auth/login')
     api.add_resource(CartResource, '/api/cart')
     api.add_resource(CustomerProfileResource, '/api/customer/profile')
+    api.add_resource(OrderResource, '/api/orders', '/api/orders/<string:order_id>')
 
     
     
