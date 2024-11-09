@@ -9,7 +9,7 @@ window.onload = () => {
         window.location.href = 'login.html';
         return;
     }
-    console.log("hello")
+    
 
     loadProfile();
 
@@ -69,13 +69,13 @@ async function updateProfile(event) {
 
         if (response.ok) {
             const updatedCustomer = await response.json();
-            alert('Profile updated successfully.');
+            showNotification('Profile updated successfully.');
             populateProfileForm(updatedCustomer);
             document.getElementById("profile-form").style.display = 'none';
             document.getElementById("edit-button").style.display = 'block';
         } else {
             const errorData = await response.json();
-            alert(errorData.message || 'Failed to update profile.');
+            showError(errorData.message || 'Failed to update profile.');
         }
     } 
     catch (error) {

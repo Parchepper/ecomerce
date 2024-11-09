@@ -44,7 +44,7 @@ async function registerUser(event) {
             window.location.href = 'products.html';
         } else {
             const errorData = await response.json();
-            alert(errorData.message || 'Registration failed.');
+            showError(errorData.message || 'Registration failed.');
         }
     } catch (error) {
         handleError(error);
@@ -72,7 +72,7 @@ async function loginUser(event) {
             window.location.href = 'products.html';
         } else {
             const errorData = await response.json();
-            alert(errorData.message || 'Login failed.');
+            showError(errorData.message || 'Login failed.');
         }
     } catch (error) {
         handleError(error);

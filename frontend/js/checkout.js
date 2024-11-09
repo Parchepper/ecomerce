@@ -35,7 +35,7 @@ function fetchOrderDetails(orderId) {
     })
     .catch(error => {
         console.error('Error fetching order details:', error);
-        alert('An error occurred while fetching the order details.');
+        showError('An error occurred while fetching the order details.', error);
     });
 }
 

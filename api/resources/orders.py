@@ -58,8 +58,8 @@ class OrderResource(Resource):
             )
             db.session.add(order_item)
 
-        # Clear the cart
-        CartItem.query.filter_by(customer_id=customer_id).delete()
+        # Clear the cart - reimplement for after checkout into payment
+        #CartItem.query.filter_by(customer_id=customer_id).delete()
 
         db.session.commit()
 

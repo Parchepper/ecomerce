@@ -17,9 +17,9 @@ function clearToken() {
 
 function handleError(error) {
     console.error('API Error:', error);
-    alert('An error occurred. Please try again.');
+    showError('An error occurred. Please try again.');
 }
-// js/app.js
+
 
 // Change background gradient on mouse move
 document.addEventListener('mousemove', function(e) {
@@ -88,6 +88,35 @@ function updateNavbar() {
         `;
     }
 }
+
+// main.js
+
+function showNotification(message, type = 'success') {
+    Toastify({
+      text: message,
+      duration: 5000,
+      close: true,
+      gravity: 'top', // 'top' or 'bottom'
+      position: 'right', // 'left', 'center' or 'right'
+      backgroundColor: type === 'success' ? '#28a745' : '#dc3545',
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+    }).showToast();
+  }
+
+  function showError(message, type = 'error') {
+    Toastify({
+      text: message,
+      duration: 5000,
+      close: true,
+      gravity: 'top', // 'top' or 'bottom'
+      position: 'right', // 'left', 'center' or 'right'
+      backgroundColor: type === 'success' ? '#28a745' : '#dc3545',
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+    }).showToast();
+  }
+  
+  
+  
 
 
 

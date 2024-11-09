@@ -3,7 +3,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     if (!isLoggedIn()) {
-        alert('You need to log in to view your cart.');
+        showError('You need to log in to view your cart.');
         window.location.href = 'login.html';
         return;
     }
@@ -178,7 +178,7 @@ function proceedToCheckout() {
     })
     .catch(error => {
         console.error('Error during checkout:', error);
-        alert('An error occurred during checkout.');
+        showError('An error occurred during checkout', error);
     });
 }
 

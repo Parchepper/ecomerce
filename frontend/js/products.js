@@ -187,9 +187,9 @@ async function addToCart(event) {
 
         const result = await response.json();
         console.log('Product added to cart:', result);
-        alert('Product added to cart!');
+        showNotification('Product added to cart!');
     } catch (error) {
         console.error('Error adding product to cart:', error);
-        alert('An error occurred while adding the product to the cart.');
+        showError('An error occurred while adding the product to the cart.');
     }
 }
