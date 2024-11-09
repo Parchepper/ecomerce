@@ -187,3 +187,59 @@ function displayOrderSummary(orderData) {
     // Redirect to the checkout page with the order ID in the URL parameters
     window.location.href = '/checkout.html?order_id=' + orderData.order_id;
 }
+
+// CLEAR CART
+
+document.getElementById('clear-cart').addEventListener('click', clearCart);
+
+function clearCart() {
+    // Optional: Add a confirmation dialog
+    if (!confirm('Are you sure you want to clear your cart?')) {
+        return;
+    }
+
+    fetch(`${API_BASE_URL}/cart/clear`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to clear cart');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Update the cart UI to reflect the empty cart
+        updateCartUI();
+        showNotification('Your cart has been cleared.', 'success');
+    })
+    .catch(error => {
+        console.error('Error clearing cart:', error);
+        showError('An error occurred while clearing the cart.', 'error');
+    });
+}
+
+function updateCartUI() {
+    // Assuming you have a function to fetch and render cart items
+    fetchCartItems();
+}
+
+function fetchCartItems() {
+    fetch(`${API_BASE_URL}/cart`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        loadCart();
+    })
+    .catch(error => {
+        console.error('Error fetching cart items:', error);
+    });
+}
+

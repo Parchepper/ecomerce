@@ -573,3 +573,28 @@ body {
     }
 }
 
+/* CART BUTTONS */
+
+.cart-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.cart-actions button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#proceed-to-checkout {
+    background-color: #28a745; /* Green */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+#clear-cart {
+    background-color: #dc3545; /* Red */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}

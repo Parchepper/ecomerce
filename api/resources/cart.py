@@ -78,4 +78,12 @@ class CartResource(Resource):
         db.session.commit()
         return cart_item_schema.dump(cart_item), 200
     
+class CartClearResource(Resource):
+    @jwt_required()
+    def delete(self):
+        customer_id = get_jwt_identity()
+        CartItem.query.filter_by(customer_id=customer_id).delete()
+        db.session.commit()
+        return {'message': 'Cart cleared successfully'}, 200
+    
 
