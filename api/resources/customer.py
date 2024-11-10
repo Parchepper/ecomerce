@@ -1,7 +1,7 @@
 from flask import request, make_response, jsonify
 from flask_restful import Resource
 from models import Customer
-from schemas import CustomerSchema
+from schemas import CustomerSchema, CustomerUpdateSchema
 from extensions import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
@@ -24,9 +24,10 @@ class CustomerProfileResource(Resource):
     def put(self):
         customer_id = get_jwt_identity()
         customer = Customer.query.get_or_404(customer_id)
-
         data = request.get_json()
-        errors = customer_schema.validate(data, partial=True)
+        schema = CustomerUpdateSchema(session=db.session)
+        print(data)
+        errors = schema.validate(data, partial=True)
         if errors:
             return {'message': 'Validation errors', 'errors': errors}, 400
 

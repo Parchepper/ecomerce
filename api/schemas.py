@@ -1,6 +1,6 @@
 # schemas.py
 
-from marshmallow import fields
+from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from extensions import db  # Add this import
 from models import (
@@ -75,6 +75,20 @@ class CustomerSchema(SQLAlchemyAutoSchema):
         exclude = ('password_hash',)  # Exclude password hash from serialization
 
     password = fields.String(load_only=True)  # For registration and login
+    
+
+class CustomerUpdateSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Customer
+        load_instance = True
+        #include_fk = True
+        #exclude = ('password_hash',)  # Exclude password hash from serialization
+
+    first_name = fields.Str(required=True, validate=validate.Length(min=1))
+    last_name = fields.Str(required=True, validate=validate.Length(min=1))
+    phone_number = fields.Str(required=True, validate=validate.Length(min=1, max=10))
+    billing_address = fields.Str(required=True, validate=validate.Length(min=1))
+    
 
 
 ### OrderItem Schema
