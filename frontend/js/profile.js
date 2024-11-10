@@ -23,20 +23,36 @@ function isLoggedIn() {
 
 async function loadProfile() {
     try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/customer/profile`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        populateProfileForm(await response.json());
+
+    cached_user = window.sessionStorage.getItem("cached_user");
+    parsed_user = JSON.parse(cached_user)
+
+       if (parsed_user){
+            populateProfileForm(parsed_user);
+            console.log("Used the Cache, good job!");
+       }
+        else{
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_BASE_URL}/customer/profile`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            data = await response.json();
+            populateProfileForm(data);
+            console.log("Used the Fetch, loser!");
+        }
+        
+        
         loadOrderHistory();
 
         
     } catch (error) {
         console.error('Error loading profile:', error);
     }
+
+    
 }
 
 function populateProfileForm(customer) {
@@ -156,6 +172,9 @@ async function updateProfile(event) {
     catch (error) {
         console.error('Error updating profile:', error);
     }
+      
+  
+
 }
 
 function formatFieldName(fieldName) {
@@ -275,7 +294,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Redirect to order details page
     window.location.href = '/order-details.html?order_id=' + orderId;
   }
-  
 
+// Add event listeners for pre-loading product data on hover
+// const profileLinks = document.querySelectorAll('.profile-link');
+// profileLinks.forEach(link => {
+//     link.addEventListener('mouseover', preloadProileData);
+// });
 
+// const productCache = {};
 
+// function preloadProfileData(event) {
+//     const profileLink = event.currentTarget;
+//     const urlParams = new URLSearchParams(profileLink.search);
+//     const profileId = urlParams.get('profile_id');
+
+//     if (productCache[profileId]) {
+//         // Data is already cached
+//         return;
+//     }
+
+   
+
+//     // Fetch product data and cache it
+//     fetch(`${API_BASE_URL}/customer/profile`)
+//         .then(response => response.json())
+//         .then(profileData => {
+//             profileCache[profileId] = profileData;
+//         })
+//         .catch(error => {
+//             console.error('Error pre-loading profile data:', error);
+//         });
+// }

@@ -77,9 +77,12 @@ function updateNavbar() {
         navbarMenu.innerHTML = `
             <a href="products.html">Products</a>
             <a href="cart.html">Cart</a>
-            <a href="profile.html">Profile</a>
+            <a href="profile.html" class="profile-link">Profile</a>
             <a href="logout.html" id="logout-btn">Logout</a>
         `;
+        const profileLink = document.querySelector('.profile-link');
+        console.log("Profile Link?", profileLink)
+        profileLink.addEventListener('mouseover', preloadProfileData);
     } else {
         // User is not logged in
         navbarMenu.innerHTML = `
@@ -87,6 +90,37 @@ function updateNavbar() {
             <a href="register.html">Register</a>
         `;
     }
+}
+
+// Add event listeners for pre-loading product data on hover
+
+
+
+function preloadProfileData(event) {
+   
+    // if ([profileId]) {
+    //     // Data is already cached
+    //     return;
+    // }
+    const token = localStorage.getItem("token")
+   
+
+    // Fetch product data and cache it
+    fetch(`${API_BASE_URL}/customer/profile`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        }
+    )
+        .then(response => response.json())
+        .then(profileData => {
+            sessionStorage.setItem("cached_user", JSON.stringify(profileData));
+        })
+        .catch(error => {
+            console.error('Error pre-loading profile data:', error);
+        });
 }
 
 // main.js

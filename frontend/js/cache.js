@@ -1,1 +1,2 @@
 window.productCache = {};
+window.profileCache = {};

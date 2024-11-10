@@ -12,16 +12,21 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'products.html';
         return;
     }
-
+    cached_product = window.sessionStorage.getItem(productId)
+    parsed_product = JSON.parse(cached_product);
     // Check if the product data is cached
-    if (productCache && productCache[productId]) {
-        displayProductDetails(productCache[productId]);
+    if (cached_product) {
+        console.log("Trying to use the Cache...");
+        console.log(parsed_product);
+        displayProductDetails(parsed_product);
+        console.log("Used the Cache, good job!");
     } else {
         // Fetch product data from the API
         fetch(`${API_BASE_URL}/products/${productId}`)
             .then(response => response.json())
             .then(productData => {
                 displayProductDetails(productData);
+                console.log("Used the Fetch, loser!");
             })
             .catch(error => {
                 console.error('Error loading product details:', error);

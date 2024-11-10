@@ -152,7 +152,7 @@ function preloadProductData(event) {
     fetch(`${API_BASE_URL}/products/${productId}`)
         .then(response => response.json())
         .then(productData => {
-            productCache[productId] = productData;
+            sessionStorage.setItem(`${productId}`, JSON.stringify(productData));
         })
         .catch(error => {
             console.error('Error pre-loading product data:', error);
