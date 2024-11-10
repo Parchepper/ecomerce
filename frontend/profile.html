@@ -20,45 +20,66 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="profile-container">
-            <h1>My Profile</h1>
-            <!-- Display current profile data -->
-            <div id="profile-data">
-                <p>First Name: <span id="first_name"></span></p>
-                <p>Last Name: <span id="last_name"></span></p>
-                <p>Email: <span id="email"></span></p>
-                <p>Phone: <span id="phone_number"></span></p>
-                <p>Billing Address: <span id="billing_address"></span></p>
+         <!-- Profile Page Container -->
+    <div class="profile-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+        <ul>
+            <li class="active" data-section="account-info">Account Information</li>
+            <li data-section="order-history">Order History</li>
+            <li data-section="settings">Settings</li>
+        </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="profile-content">
+        <!-- Account Information Section -->
+        <section id="account-info" class="profile-section active">
+            <h2>Account Information</h2>
+            <div class="profile-details">
+            <div class="profile-picture">
+                <img src="images/default-avatar.png" alt="Profile Picture" id="profile-picture">
+                <button id="change-picture-button">Change Picture</button>
             </div>
-            <!-- Edit button -->
-            <button id="edit-button" onclick="handleEditButtonClick()" class="btn btn-edit">Edit Profile</button>
-            <!-- Form to edit profile data -->
-            <form id="profile-form" class="form" style="display: none;">
-                <!-- Profile fields will be populated by JavaScript -->
-                <div class="form-group">
-                    <label for="first_name">First Name:</label>
-                    <input type="text" name="first_name" id="first_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="last_name">Last Name:</label>
-                    <input type="text" name="last_name" id="last_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" required disabled>
-                </div>
-                <div class="form-group">
-                    <label for="phone_number">Phone:</label>
-                    <input type="text" name="phone_number" id="phone_number">
-                </div>
-                <div class="form-group">
-                    <label for="">billing_address:</label>
-                    <textarea name="billing_address" id="billing_address"></textarea>
-                </div>
-                <!-- Add additional fields as needed -->
-                <button type="submit" class="btn btn-submit">Save Changes</button>
-            </form>
-        </div>
+            <div class="profile-info">
+                <p><strong>Name:</strong> <span id="first_name">John Doe</span></p>
+                <p><strong>Email:</strong> <span id="email">john.doe@example.com</span></p>
+                <p><strong>Phone:</strong> <span id="phone_number">123-456-7890</span></p>
+                <p><strong>Address:</strong> <span id="billing_address">123 Main St, City, Country</span></p>
+                <button id="edit-profile-button">Edit Profile</button>
+            </div>
+            </div>
+        </section>
+
+        <!-- Order History Section -->
+        <section id="order-history" class="profile-section">
+            <h2>Order History</h2>
+            <table id="order-history-table">
+            <thead>
+                <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Order history items will be injected here -->
+            </tbody>
+            </table>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="profile-section">
+            <h2>Settings</h2>
+            <div class="settings-options">
+            <button id="change-password-button">Change Password</button>
+            <button id="logout-button">Logout</button>
+            </div>
+        </section>
+        </main>
+    </div>
     </div>
   
     <!-- Scripts -->

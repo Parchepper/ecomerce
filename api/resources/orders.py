@@ -4,8 +4,9 @@ from models import db, Order, OrderItem, CartItem, Product
 from schemas import OrderSchema
 from datetime import datetime
 from decimal import Decimal
+from flask import jsonify
 
-class OrderResource(Resource):
+class OrdersResource(Resource):
     @jwt_required()
     def post(self):
         # Get the current user's ID
@@ -74,11 +75,21 @@ class OrderResource(Resource):
         return shipping_cost
 
     @jwt_required()
+    def get(self):
+        customer_id = get_jwt_identity()
+        orders = Order.query.filter_by(customer_id=customer_id).all()
+        if not orders:
+            return {'message': 'Order not found'}, 404
+        order_schema = OrderSchema(many=True)
+        return order_schema.dump(orders), 200
+    
+class OrderResource(Resource):
+    @jwt_required()
     def get(self, order_id):
         customer_id = get_jwt_identity()
         order = Order.query.filter_by(order_id=order_id, customer_id=customer_id).first()
         if not order:
             return {'message': 'Order not found'}, 404
-
         order_schema = OrderSchema()
         return order_schema.dump(order), 200
+        

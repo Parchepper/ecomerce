@@ -8,7 +8,7 @@ from resources.category import CategoryListResource, CategoryResource
 from resources.auth import RegisterResource, LoginResource
 from resources.customer import CustomerProfileResource
 from resources.cart import CartResource
-from resources.orders import OrderResource
+from resources.orders import OrderResource, OrdersResource
 from resources.cart import CartClearResource
 # Import other resources...
 
@@ -43,7 +43,8 @@ def create_app():
     api.add_resource(LoginResource, '/api/auth/login')
     api.add_resource(CartResource, '/api/cart')
     api.add_resource(CustomerProfileResource, '/api/customer/profile')
-    api.add_resource(OrderResource, '/api/orders', '/api/orders/<string:order_id>')
+    api.add_resource(OrdersResource, '/api/orders')
+    api.add_resource(OrderResource, '/api/orders/<string:order_id>')
     api.add_resource(CartClearResource, '/api/cart/clear')
 
     

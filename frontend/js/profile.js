@@ -31,7 +31,7 @@ async function loadProfile() {
             }
         });
         populateProfileForm(await response.json());
-
+        loadOrderHistory();
 
         
     } catch (error) {
@@ -42,12 +42,64 @@ async function loadProfile() {
 function populateProfileForm(customer) {
     console.log("CUSTOMER:", customer);
     document.getElementById('first_name').innerHTML = customer.first_name || '';
-    document.getElementById('last_name').innerHTML = customer.last_name || '';
     document.getElementById('email').innerHTML = customer.email || '';
     document.getElementById('phone_number').innerHTML = customer.phone_number || '';
     document.getElementById('billing_address').innerHTML = customer.billing_address || '';
     // Populate additional fields as needed
 }
+
+async function loadOrderHistory(){
+    // Fetch order history from the server
+    fetch(`${API_BASE_URL}/orders`, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+      },
+    })
+      .then(response => response.json())
+      .then(orders => {
+        console.log("======================================");
+        console.log(orders);
+        const orderHistoryBody = document.querySelector('#order-history-table tbody');
+        orderHistoryBody.innerHTML = '';
+        
+        orders.forEach(order => {
+          const row = document.createElement('tr');
+  
+          const orderIdCell = document.createElement('td');
+          orderIdCell.textContent = order.order_id;
+  
+          const dateCell = document.createElement('td');
+          const orderDate = new Date(order.order_date);
+          dateCell.textContent = orderDate.toLocaleDateString();
+  
+          const totalCell = document.createElement('td');
+          totalCell.textContent = '$' + parseFloat(order.total_amount).toFixed(2);
+  
+          const statusCell = document.createElement('td');
+          statusCell.textContent = order.order_status;
+  
+          const detailsCell = document.createElement('td');
+          const detailsButton = document.createElement('button');
+          detailsButton.textContent = 'View';
+          detailsButton.addEventListener('click', () => {
+            viewOrderDetails(order.order_id);
+          });
+          detailsCell.appendChild(detailsButton);
+  
+          row.appendChild(orderIdCell);
+          row.appendChild(dateCell);
+          row.appendChild(totalCell);
+          row.appendChild(statusCell);
+          row.appendChild(detailsCell);
+  
+          orderHistoryBody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error('Error loading order history:', error);
+      });
+  }
 
 async function updateProfile(event) {
     event.preventDefault();
@@ -90,6 +142,60 @@ function handleEditButtonClick() {
 
 
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Handle sidebar navigation clicks
+    const menuItems = document.querySelectorAll('.sidebar ul li');
+    const profileSections = document.querySelectorAll('.profile-section');
+  
+    menuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        // Remove 'active' class from all menu items
+        menuItems.forEach(i => i.classList.remove('active'));
+        // Add 'active' class to clicked menu item
+        item.classList.add('active');
+  
+        // Hide all profile sections
+        profileSections.forEach(section => section.classList.remove('active'));
+        // Show the selected section
+        const sectionId = item.getAttribute('data-section');
+        document.getElementById(sectionId).classList.add('active');
+      });
+    });
+
+  
+    // Event listeners for buttons
+    document.getElementById('edit-profile-button').addEventListener('click', editProfile);
+    document.getElementById('change-password-button').addEventListener('click', changePassword);
+    document.getElementById('logout-button').addEventListener('click', logout);
+  
+    // Load order history
+    
+  });
+  
+    
+  function editProfile() {
+    // Redirect to edit profile page or open a modal
+    window.location.href = '/edit-profile.html';
+  }
+  
+  function changePassword() {
+    // Redirect to change password page or open a modal
+    window.location.href = '/change-password.html';
+  }
+  
+  function logout() {
+    // Clear tokens and redirect to login page
+    localStorage.removeItem('token');
+    window.location.href = '/login.html';
+  }
+
+  
+  function viewOrderDetails(orderId) {
+    // Redirect to order details page
+    window.location.href = '/order-details.html?order_id=' + orderId;
+  }
+  
 
 
 
