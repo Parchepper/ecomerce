@@ -5,34 +5,66 @@
     <title>Checkout</title>
     <!-- Include your CSS files here -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/checkout.css">
     <link rel="stylesheet" href="css/toastify.min.css">
 </head>
 <body>
-
+    <!-- Navigation bar, if any -->
     <nav class="navbar">
         <div class="navbar-brand">
-            <a href="index.html">E-Commerce Platform</a>
+            <a href="index.html">LEVAC    </a>
         </div>
         <div class="navbar-menu" id="navbar-menu">
-            <!-- Links populated by JavaScript -->
+            <!-- Links will be populated by JavaScript -->
         </div>
     </nav>
-<div class="main-content">
-    <h1>Checkout</h1>
-    <div id="order-summary">
-        <h2>Order Summary</h2>
-        <div id="order-items"></div>
-        <div class="order-totals">
-            <p>Subtotal: <span id="subtotal">$0.00</span></p>
-            <p>Sales Tax: <span id="sales-tax">$0.00</span></p>
-            <p>Shipping Cost: <span id="shipping-cost">$0.00</span></p>
-            <p><strong>Total Amount: <span id="total-amount">$0.00</span></strong></p>
+    <div class="main-content"></div>
+    <div class="checkout-container">
+        <!-- Order Summary Section -->
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <table id="order-items-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="order-items-body">
+                    <!-- Order items will be injected here -->
+                </tbody>
+            </table>
+            <div class="order-totals">
+                <p>Subtotal: <span id="subtotal">$0.00</span></p>
+                <p>Sales Tax: <span id="sales-tax">$0.00</span></p>
+                <p>Shipping Cost: <span id="shipping-cost">$0.00</span></p>
+                <p><strong>Total Amount: <span id="total-amount">$0.00</span></strong></p>
+            </div>
+            <!-- Place Order Button -->
+            <button id="place-order-button">Place Order</button> 
+            <div class="trust-signals">
+                <img src="images/secure-payment.png" alt="Secure Payment" width="100">
+                <img src="images/payment-methods.png" alt="Payment Methods" width="100">
+            </div>
+        </div>
+        
+        <!-- Marketing Section -->
+        <div class="marketing-section">
+            <!-- Include marketing elements here -->
+            <div class="promo">
+                <h3>Special Offer!</h3>
+                <p>Get 10% off your next purchase with code <strong>WELCOME10</strong></p>
+            </div>
+            <!-- Add more marketing elements as needed -->
         </div>
     </div>
-</div>
+    </div>
     <!-- Include your JavaScript files here -->
-    <script src="js/app.js"></script> 
-    <script src="js/toastify.js"></script> 
+    <script src="js/app.js"></script>
     <script src="js/checkout.js"></script>
+    <script src="js/toastify.js"></script>    
+    <script src="js/carousel.js"></script>
 </body>
 </html>

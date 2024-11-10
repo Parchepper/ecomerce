@@ -97,7 +97,7 @@ function showNotification(message, type = 'success') {
       duration: 5000,
       close: true,
       gravity: 'top', // 'top' or 'bottom'
-      position: 'right', // 'left', 'center' or 'right'
+      position: 'center', // 'left', 'center' or 'right'
       backgroundColor: type === 'success' ? '#28a745' : '#dc3545',
       stopOnFocus: true, // Prevents dismissing of toast on hover
     }).showToast();
@@ -109,7 +109,7 @@ function showNotification(message, type = 'success') {
       duration: 5000,
       close: true,
       gravity: 'top', // 'top' or 'bottom'
-      position: 'right', // 'left', 'center' or 'right'
+      position: 'center', // 'left', 'center' or 'right'
       backgroundColor: type === 'success' ? '#28a745' : '#dc3545',
       stopOnFocus: true, // Prevents dismissing of toast on hover
     }).showToast();

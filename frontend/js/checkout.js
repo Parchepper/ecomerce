@@ -1,10 +1,10 @@
-// checkout.js
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Get the order_id from the URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('order_id');
-    console.log(orderId)
+
     if (!orderId) {
         alert('No order ID found. Please return to the cart and proceed to checkout again.');
         window.location.href = '/cart.html'; // Redirect to cart page
@@ -35,53 +35,66 @@ function fetchOrderDetails(orderId) {
     })
     .catch(error => {
         console.error('Error fetching order details:', error);
-        showError('An error occurred while fetching the order details.', error);
+        alert('An error occurred while fetching the order details.');
     });
 }
 
 function renderOrderDetails(order) {
-    // Get the container elements
-    const orderItemsContainer = document.getElementById('order-items');
+    // Get the table body element
+    const orderItemsBody = document.getElementById('order-items-body');
+    orderItemsBody.innerHTML = ''; // Clear any existing content
+
+    // Render each order item as a table row
+    order.order_items.forEach(item => {
+        const row = document.createElement('tr');
+
+        // Product Name
+        const productCell = document.createElement('td');
+        productCell.textContent = item.product.name;
+
+        // Price
+        const priceCell = document.createElement('td');
+        priceCell.textContent = '$' + parseFloat(item.unit_price).toFixed(2);
+
+        // Quantity
+        const quantityCell = document.createElement('td');
+        quantityCell.textContent = item.quantity;
+
+        // Total
+        const totalCell = document.createElement('td');
+        const totalPrice = parseFloat(item.unit_price) * item.quantity;
+        totalCell.textContent = '$' + totalPrice.toFixed(2);
+
+        // Append cells to the row
+        row.appendChild(productCell);
+        row.appendChild(priceCell);
+        row.appendChild(quantityCell);
+        row.appendChild(totalCell);
+
+        // Append row to the table body
+        orderItemsBody.appendChild(row);
+    });
+
+    // Update totals
     const subtotalElement = document.getElementById('subtotal');
     const salesTaxElement = document.getElementById('sales-tax');
     const shippingCostElement = document.getElementById('shipping-cost');
     const totalAmountElement = document.getElementById('total-amount');
 
-    // Clear any existing content
-    orderItemsContainer.innerHTML = '';
-
-    // Render each order item
-    order.order_items.forEach(item => {
-        const itemElement = document.createElement('div');
-        itemElement.classList.add('order-item');
-
-        const itemName = document.createElement('div');
-        itemName.textContent = item.product.name;
-        itemName.classList.add('item-name');
-
-        const itemQuantity = document.createElement('div');
-        itemQuantity.textContent = `Quantity: ${item.quantity}`;
-        itemQuantity.classList.add('item-quantity');
-
-        const itemPrice = document.createElement('div');
-        itemPrice.textContent = `Unit Price: $${parseFloat(item.unit_price).toFixed(2)}`;
-        itemPrice.classList.add('item-price');
-
-        const itemTotal = document.createElement('div');
-        itemTotal.textContent = `Total: $${parseFloat(item.total_price).toFixed(2)}`;
-        itemTotal.classList.add('item-total');
-
-        itemElement.appendChild(itemName);
-        itemElement.appendChild(itemQuantity);
-        itemElement.appendChild(itemPrice);
-        itemElement.appendChild(itemTotal);
-
-        orderItemsContainer.appendChild(itemElement);
-    });
-
-    // Display subtotal, sales tax, shipping cost, and total amount
-    subtotalElement.textContent = `$${parseFloat(order.total_amount - order.sales_tax - order.shipping_cost).toFixed(2)}`;
-    salesTaxElement.textContent = `$${parseFloat(order.sales_tax).toFixed(2)}`;
-    shippingCostElement.textContent = `$${parseFloat(order.shipping_cost).toFixed(2)}`;
-    totalAmountElement.textContent = `$${parseFloat(order.total_amount).toFixed(2)}`;
+    const subtotal = parseFloat(order.total_amount) - parseFloat(order.sales_tax) - parseFloat(order.shipping_cost);
+    subtotalElement.textContent = '$' + subtotal.toFixed(2);
+    salesTaxElement.textContent = '$' + parseFloat(order.sales_tax).toFixed(2);
+    shippingCostElement.textContent = '$' + parseFloat(order.shipping_cost).toFixed(2);
+    totalAmountElement.textContent = '$' + parseFloat(order.total_amount).toFixed(2);
 }
+
+document.getElementById('place-order-button').addEventListener('click', placeOrder);
+
+function placeOrder() {
+    // Implement the logic to process the order
+    // For now, you can display a message or redirect to a confirmation page
+    showError('Implement purchases!');
+    // Redirect to an order confirmation page if available
+    // window.location.href = '/order-confirmation.html?order_id=' + orderId;
+}
+

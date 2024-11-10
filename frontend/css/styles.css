@@ -17,6 +17,8 @@ body {
 
 .main-content {
     padding-top: 50px; /* Adjust this value to match your navbar's height */
+    background-color: #b9b8b0;
+    
 }
 
 /* Splash Container */
@@ -290,17 +292,21 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
 .product-card {
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 10px;
     overflow: hidden;
     transition: box-shadow 0.3s;
+    background-color: #b9b8b0;
 }
 
 .product-card:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    background-color: #ada4a4;
 }
 
 .product-image {
