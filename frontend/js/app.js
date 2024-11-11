@@ -81,7 +81,6 @@ function updateNavbar() {
             <a href="logout.html" id="logout-btn">Logout</a>
         `;
         const profileLink = document.querySelector('.profile-link');
-        console.log("Profile Link?", profileLink)
         profileLink.addEventListener('mouseover', preloadProfileData);
     } else {
         // User is not logged in

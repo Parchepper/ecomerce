@@ -3,6 +3,7 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadSuppliers();
     loadCategories();
     setupEventListeners();
     loadProducts();
@@ -19,6 +20,11 @@ function setupEventListeners() {
         loadProducts();
     });
 
+    document.getElementById('supplier-filter').addEventListener('change', () => {
+        console.log('Supplier changed');
+        loadProducts();
+    });
+
     document.getElementById('filter-btn').addEventListener('click', () => {
         console.log('Filter button clicked');
         loadProducts();
@@ -29,6 +35,7 @@ async function loadProducts() {
     try {
         const searchQuery = document.getElementById('search-input').value;
         const categoryId = document.getElementById('category-filter').value;
+        const supplierId = document.getElementById('supplier-filter').value;
         const minPrice = document.getElementById('min-price').value;
         const maxPrice = document.getElementById('max-price').value;
 
@@ -39,6 +46,9 @@ async function loadProducts() {
         }
         if (categoryId) {
             params.append('category_id', categoryId);
+        }
+        if (supplierId) {
+            params.append('supplier_id', supplierId);
         }
         if (minPrice) {
             params.append('min_price', minPrice);
@@ -89,6 +99,30 @@ function populateCategoryFilter(categories) {
     });
 }
 
+async function loadSuppliers() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/suppliers`);
+        if (response.ok) {
+            const suppliers = await response.json();
+            populateSupplierFilter(suppliers);
+        } else {
+            console.error('Failed to load suppliers.');
+        }
+    } catch (error) {
+        console.error('Error loading suppliers:', error);
+    }
+}
+
+function populateSupplierFilter(suppliers) {
+    const supplierFilter = document.getElementById('supplier-filter');
+    suppliers.forEach(supplier => {
+        const option = document.createElement('option');
+        option.value = supplier.supplier_id;
+        option.textContent = supplier.name;
+        supplierFilter.appendChild(option);
+    });
+}
+
 
 
 function debounce(func, delay) {
@@ -112,7 +146,7 @@ function displayProducts(products) {
                 <img src="${product.image_url || 'images/placeholder.png'}" alt="${product.name}" class="product-image">
                 <div class="product-info">
                     <h3>${product.name}</h3>
-                    <p>${product.description}</p>
+                        <p>${product.description}</p>
                     <p class="price">$${product.price}</p>
                 </div>
             </a>

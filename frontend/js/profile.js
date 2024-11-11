@@ -290,10 +290,84 @@ document.addEventListener('DOMContentLoaded', () => {
 //       });
 //   }
   
-  function viewOrderDetails(orderId) {
-    // Redirect to order details page
-    window.location.href = '/order-details.html?order_id=' + orderId;
+function viewOrderDetails(orderId) {
+    // Confirm with the user before proceeding
+    if (confirm('Do you want to reorder this past order? The items will be added to your cart.')) {
+      reloadOrderIntoCart(orderId);
+    }
   }
+
+async function reloadOrderIntoCart(orderId) {
+    const token = localStorage.getItem('token');
+  
+    try {
+      // Fetch the order details from the server
+      const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch order details.');
+      }
+  
+      const orderData = await response.json();
+  
+      // For each order item, add it back to the cart
+      const addItemPromises = orderData.order_items.map(item => {
+        return addToCart(item.product.product_id, item.quantity);
+      });
+  
+      // Wait for all items to be added to the cart
+      await Promise.all(addItemPromises);
+  
+             
+      // Redirect the user to the cart page to review the items
+      window.location.href = '/cart.html?reorder=success';
+
+      
+      
+  
+    } catch (error) {
+      console.error('Error reloading order into cart:', error);
+      showNotification('An error occurred while adding items to the cart.', 'error');
+    }
+  }
+  
+async function addToCart(productId, quantity) {
+    const token = localStorage.getItem('token');
+  
+    // Prepare the payload
+    const payload = {
+      product_id: productId,
+      quantity: quantity
+    };
+  
+    // Send the request to add the item to the cart
+    const response = await fetch(`${API_BASE_URL}/cart`, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+  
+    if (!response.ok) {
+      throw new Error(`Failed to add product ${productId} to cart.`);
+    }
+  
+    // Optionally, handle the response
+    const data = await response.json();
+    return data;
+  }  
+  
+  
+
+
 
 // Add event listeners for pre-loading product data on hover
 // const profileLinks = document.querySelectorAll('.profile-link');

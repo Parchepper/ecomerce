@@ -7,7 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'login.html';
         return;
     }
+    // Notify the user
+    const url_query = window.location.search;
+    const urlParams = new URLSearchParams(url_query);
+    const reorder = urlParams.get('reorder');
 
+    if (reorder) {
+        showNotification('Order items have been added to your cart.', 'success');
+    }
+        
+    
     loadCart();
 
     // Event delegation for cart item actions
@@ -17,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function isLoggedIn() {
     return !!localStorage.getItem('token');
 }
+
+
 
 async function loadCart() {
     try {

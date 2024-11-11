@@ -10,6 +10,7 @@ from resources.customer import CustomerProfileResource
 from resources.cart import CartResource
 from resources.orders import OrderResource, OrdersResource
 from resources.cart import CartClearResource
+from resources.supplier import SupplierListResource, SupplierResource
 # Import other resources...
 
 from flask_cors import CORS
@@ -46,6 +47,8 @@ def create_app():
     api.add_resource(OrdersResource, '/api/orders')
     api.add_resource(OrderResource, '/api/orders/<string:order_id>')
     api.add_resource(CartClearResource, '/api/cart/clear')
+    api.add_resource(SupplierListResource, '/api/suppliers')
+    api.add_resource(SupplierResource, '/api/suppliers/<string:supplier>')
 
     
     

@@ -24,6 +24,7 @@ class ProductListResource(Resource):
     def get(self):
         # Get query parameters
         category_id = request.args.get('category_id', type=str)
+        supplier_id = request.args.get('supplier_id', type=str)
         min_price = request.args.get('min_price', type=float)
         max_price = request.args.get('max_price', type=float)
         search_query = request.args.get('search', type=str)
@@ -34,6 +35,10 @@ class ProductListResource(Resource):
         # Filter by category_id if provided
         if category_id:
             query = query.filter(Product.category_id == category_id)
+
+        # Filter by category_id if provided
+        if supplier_id:
+            query = query.filter(Product.supplier_id == supplier_id)
 
         # Filter by price range if provided
         if min_price is not None:
