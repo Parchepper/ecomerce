@@ -1,6 +1,6 @@
 // js/profile.js
 
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
     // Ensure the user is authenticated
 
     
@@ -15,7 +15,7 @@ window.onload = () => {
 
     const profileForm = document.getElementById('profile-form');
     profileForm.addEventListener('submit', updateProfile);
-};
+});
 
 function isLoggedIn() {
     return !!localStorage.getItem('token');
