@@ -158,6 +158,9 @@ cython_debug/
 /api/resources/
 .test_data.txt
 
+# ignores all .md files
+.txt
+
 
 
 # PyCharm
