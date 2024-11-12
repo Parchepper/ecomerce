@@ -159,7 +159,7 @@ cython_debug/
 .test_data.txt
 
 # ignores all .md files
-.txt
+*.txt
 
 
 
