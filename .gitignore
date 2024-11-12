@@ -155,7 +155,7 @@ dmypy.json
 cython_debug/
 
 #test data
-./api/resources/test_data.txt
+.test_data.txt
 /api/resources/test_data.txt
 
 
