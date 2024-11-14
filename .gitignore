@@ -158,8 +158,11 @@ cython_debug/
 /api/resources/
 .test_data.txt
 
-# ignores all .md files
-api/resources
+# ignores all .txt files
+api/resources/
+*.txt
+
+/api/resources
 *.txt
 
 

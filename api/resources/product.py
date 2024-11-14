@@ -13,12 +13,6 @@ product_list_schema = ProductSchema(many=True)
 
 # resources/product.py
 
-from flask_restful import Resource
-from flask import request
-from models import Product
-from schemas import ProductSchema
-from extensions import db
-
 
 class ProductListResource(Resource):
     def get(self):
@@ -28,33 +22,40 @@ class ProductListResource(Resource):
         min_price = request.args.get('min_price', type=float)
         max_price = request.args.get('max_price', type=float)
         search_query = request.args.get('search', type=str)
+        page = request.args.get('page', 1, type=int)  # Default to page 1
+        limit = request.args.get('limit', 10, type=int)  # Default to 10 items per page
 
         # Build the base query
         query = Product.query
 
-        # Filter by category_id if provided
+        # Apply filters based on query parameters
         if category_id:
             query = query.filter(Product.category_id == category_id)
-
-        # Filter by category_id if provided
         if supplier_id:
             query = query.filter(Product.supplier_id == supplier_id)
-
-        # Filter by price range if provided
         if min_price is not None:
             query = query.filter(Product.price >= min_price)
         if max_price is not None:
             query = query.filter(Product.price <= max_price)
-
-        # Filter by search query if provided
         if search_query:
             query = query.filter(Product.name.ilike(f'%{search_query}%'))
 
-        # Execute the query
-        products = query.all()
+        
 
-        # Serialize the data
-        return product_list_schema.dump(products), 200
+        # Apply pagination
+        paginated_query = query.paginate(page=page, per_page=limit, error_out=False)
+    
+        products = paginated_query.items  # Items for the current page
+        total_products = paginated_query.total  # Total number of products
+
+        # Serialize the data with additional pagination metadata
+        return {
+            "products": product_list_schema.dump(products),
+            "total": total_products,
+            "page": page,
+            "pages": paginated_query.pages,
+            "per_page": limit
+        }, 200
 
 
     @jwt_required()

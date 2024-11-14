@@ -18,6 +18,8 @@ body {
 .main-content {
     padding-top: 50px; /* Adjust this value to match your navbar's height */
     background-color: #b9b8b0;
+    padding-left: 200px;
+    padding-right: 200px;
     
 }
 
@@ -449,9 +451,89 @@ body {
 }
 
 /* Adjusting Padding for Advertisements */
+
+/* General Container Styling FOR SEARCH & FILTER*/
 .container {
-    padding: 40px 20px; /* Increased top padding for spacing */
+    padding: 20px;
+    max-width: 2000px;
+    margin: auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Search and Filters Section */
+.search-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Search Input */
+.search-filters input[type="text"],
+.search-filters input[type="number"],
+.search-filters select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+    width: 100%;
+    max-width: 220px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus State for Inputs */
+.search-filters input[type="text"]:focus,
+.search-filters input[type="number"]:focus,
+.search-filters select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Price Filter Container */
+.price-filter {
+    display: flex;
+    gap: 10px;
+}
+
+/* Filter Button */
+#filter-btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+.add-to-cart-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+#filter-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 
 /* Products Grid Adjustments */
 .products-grid {

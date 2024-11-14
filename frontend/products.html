@@ -72,6 +72,11 @@
     <!-- Main Content -->
     <div class="container">
         <!-- Search and Filters -->
+        <div id="pagination-controls">
+            <button id="prev-page" onclick="changePage('prev')">Previous</button>
+            <span id="current-page">1</span>
+            <button id="next-page" onclick="changePage('next')">Next</button>
+          </div>
         <div class="search-filters">
             <input type="text" id="search-input" placeholder="Search products...">
             <select id="category-filter">

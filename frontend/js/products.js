@@ -6,73 +6,31 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSuppliers();
     loadCategories();
     setupEventListeners();
-    loadProducts();
+    Products();
 });
 
 function setupEventListeners() {
     document.getElementById('search-input').addEventListener('input', debounce(() => {
         console.log('Search input changed');
-        loadProducts();
+        displayProducts();
     }, 500));
 
     document.getElementById('category-filter').addEventListener('change', () => {
         console.log('Category changed');
-        loadProducts();
+        displayProducts();
     });
 
     document.getElementById('supplier-filter').addEventListener('change', () => {
         console.log('Supplier changed');
-        loadProducts();
+        displayProducts();
     });
 
     document.getElementById('filter-btn').addEventListener('click', () => {
         console.log('Filter button clicked');
-        loadProducts();
+        displayProducts();
     });
 }
 
-async function loadProducts() {
-    try {
-        const searchQuery = document.getElementById('search-input').value;
-        const categoryId = document.getElementById('category-filter').value;
-        const supplierId = document.getElementById('supplier-filter').value;
-        const minPrice = document.getElementById('min-price').value;
-        const maxPrice = document.getElementById('max-price').value;
-
-        const params = new URLSearchParams();
-
-        if (searchQuery) {
-            params.append('search', searchQuery);
-        }
-        if (categoryId) {
-            params.append('category_id', categoryId);
-        }
-        if (supplierId) {
-            params.append('supplier_id', supplierId);
-        }
-        if (minPrice) {
-            params.append('min_price', minPrice);
-        }
-        if (maxPrice) {
-            params.append('max_price', maxPrice);
-        }
-
-        const url = `${API_BASE_URL}/products?${params.toString()}`;
-
-        console.log('Fetching products from URL:', url);
-
-        const response = await fetch(url);
-        if (response.ok) {
-            const products = await response.json();
-            console.log('Products received:', products);
-            displayProducts(products);
-        } else {
-            console.error('Failed to load products.');
-        }
-    } catch (error) {
-        console.error('Error loading products:', error);
-    }
-}
 
 
 async function loadCategories() {
@@ -133,14 +91,48 @@ function debounce(func, delay) {
     };
 }
 
-function displayProducts(products) {
+let currentPage = 1;
+const limit = 8;
+
+async function displayProducts(page = 1) {
+    const searchQuery = document.getElementById('search-input').value;
+    const categoryId = document.getElementById('category-filter').value;
+    const supplierId = document.getElementById('supplier-filter').value;
+    const minPrice = document.getElementById('min-price').value;
+    const maxPrice = document.getElementById('max-price').value;
+
+    const params = new URLSearchParams();
+
+    if (searchQuery) {
+        params.append('search', searchQuery);
+    }
+    if (categoryId) {
+        params.append('category_id', categoryId);
+    }
+    if (supplierId) {
+        params.append('supplier_id', supplierId);
+    }
+    if (minPrice) {
+        params.append('min_price', minPrice);
+    }
+    if (maxPrice) {
+        params.append('max_price', maxPrice);
+    }
+    params.append('page', page)
+
+    params.append('limit', limit)
+                                ;
+    const response = await fetch(`${API_BASE_URL}/products?${params.toString()}`);
+    const data = await response.json();
+
     const productsGrid = document.getElementById('products-grid');
     productsGrid.innerHTML = '';
+    
 
-    products.forEach(product => {
+    data.products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
-
+        
         productCard.innerHTML = `
             <a href="product_detail.html?product_id=${product.product_id}" class="product-link">
                 <img src="${product.image_url || 'images/placeholder.png'}" alt="${product.name}" class="product-image">
@@ -156,6 +148,13 @@ function displayProducts(products) {
         productsGrid.appendChild(productCard);
     });
 
+    document.getElementById('current-page').innerText = data.page;
+    document.getElementById('prev-page').disabled = data.page === 1;
+    document.getElementById('next-page').disabled = data.page === data.pages;
+
+    currentPage = data.page;
+
+
     // Add event listeners for "Add to Cart" buttons
     const addToCartButtons = document.querySelectorAll('.add-to-cart-button');
     addToCartButtons.forEach(button => {
@@ -167,7 +166,21 @@ function displayProducts(products) {
     productLinks.forEach(link => {
         link.addEventListener('mouseover', preloadProductData);
     });
+
+    
 }
+
+function changePage(direction) {
+    if (direction === 'next') {
+        displayProducts(currentPage + 1);
+    } else if (direction === 'prev') {
+        displayProducts(currentPage - 1);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    displayProducts(currentPage);
+});
 
 
 const productCache = {};
