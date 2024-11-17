@@ -42,9 +42,17 @@ function displayProductDetails(product) {
             <img src="${product.image_url || 'images/placeholder.png'}" alt="${product.name}" class="product-detail-image">
             <div class="product-detail-info">
                 <h1>${product.name}</h1>
+                <h3>${product.supplier == "" ? "" : product.supplier }</h3>
+                    <h2>${product.upc== null ? "" : product.upc}</h2>
                 <p class="price">$${product.price.toFixed(2)}</p>
                 <p>${product.description}</p>
                 <button class="add-to-cart-button" data-product-id="${product.product_id}">Add to Cart</button>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p>Weight: ${product.weight}</p>
+                <p>Dimensions: ${product.dimensions}</p>
             </div>
         </div>
     `;

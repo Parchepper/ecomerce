@@ -399,3 +399,4 @@ async function addToCart(productId, quantity) {
 //             console.error('Error pre-loading profile data:', error);
 //         });
 // }
+

@@ -6,14 +6,23 @@ from sqlalchemy import create_engine
 from models import Product, Category, Supplier, generate_uuid  # Import your models here
 
 # Replace 'your_database_connection_string' with your actual database connection string
+from app import create_app
+from extensions import db
+
+
 engine = create_engine('postgresql://postgres:admin@localhost:5432/ecommerce_db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
-def main():
-    data_file = 'test_data.txt'  # Replace with the path to your data file
 
-    with open(data_file, 'r', encoding='utf-8') as f:
+def main():
+    data_file = 'ecom-price-list.txt'  # Replace with the path to your data file
+
+    # app = create_app()
+    # with app.app_context():
+    #     db.create_all()
+
+    with open(data_file, 'r') as f:
         reader = csv.reader(f, delimiter='\t')
 
         # Skip the header row
@@ -21,7 +30,8 @@ def main():
 
         for row in reader:
             # Skip empty lines
-            if not row or len(row) < 24:
+            if not row :
+                
                 continue
 
             try:
@@ -29,11 +39,13 @@ def main():
                 sku = row[0].strip()
                 upc = row[1].strip() or None
                 supplier_name = row[2].strip()
-                name = row[4].strip()
-                description = row[4].strip()  # Using English description
-                price_str = row[10].strip()
-                created_at_str = row[21].strip()
-                category_name = row[22].strip()
+                name = row[3].strip()
+                description = row[3].strip()  # Using English description
+                price_str = row[8].strip() 
+                cost = row[9].strip()
+                weight = row[4].strip()
+                dimensions = f'{row[5].strip()}" x {row[6].strip()}" x {row[7].strip()}"'
+                category_name = row[11].strip()
 
                 # Convert price to Decimal
                 try:
@@ -42,16 +54,7 @@ def main():
                     print(f"Invalid price '{price_str}' for SKU '{sku}'. Setting price to 0.00.")
                     price = Decimal('0.00')
 
-                # Parse date
-                if created_at_str:
-                    try:
-                        created_at = datetime.strptime(created_at_str, '%Y-%m-%dT%H:%M:%SZ')
-                    except ValueError:
-                        print(f"Invalid date '{created_at_str}' for SKU '{sku}'. Using current datetime.")
-                        created_at = datetime.utcnow()
-                else:
-                    created_at = datetime.utcnow()
-
+                
                 # Lookup or create supplier
                 supplier = session.query(Supplier).filter_by(name=supplier_name).first()
                 if not supplier:
@@ -80,11 +83,12 @@ def main():
                     category_id=category.category_id,
                     supplier_id=supplier.supplier_id,
                     price=price,
+                    cost=cost,
                     sku=sku,
                     upc=upc,
-                    is_active=True,
-                    created_at=created_at,
-                    updated_at=created_at
+                    weight=weight,
+                    dimensions=dimensions,
+                    is_active=True                    
                 )
 
                 session.add(product)

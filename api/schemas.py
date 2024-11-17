@@ -45,6 +45,7 @@ class ProductSchema(SQLAlchemyAutoSchema):
 
      # Apply custom Decimal to float conversion
     price = DecimalAsFloat()
+    cost = DecimalAsFloat() 
     weight = DecimalAsFloat()
 
     def get_image_urls(self, obj):

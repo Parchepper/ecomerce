@@ -7,6 +7,7 @@ from schemas import ProductSchema
 from extensions import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import or_
 
 product_schema = ProductSchema()
 product_list_schema = ProductSchema(many=True)
@@ -38,8 +39,13 @@ class ProductListResource(Resource):
         if max_price is not None:
             query = query.filter(Product.price <= max_price)
         if search_query:
-            query = query.filter(Product.name.ilike(f'%{search_query}%'))
-
+            #query = query.filter(Product.name.ilike(f'%{search_query}%'))
+            query = query.filter(
+                or_(
+                    Product.name.ilike(f'%{search_query}%'),
+                    Product.upc.ilike(f'%{search_query}%')
+                )
+            )
         
 
         # Apply pagination
@@ -48,9 +54,14 @@ class ProductListResource(Resource):
         products = paginated_query.items  # Items for the current page
         total_products = paginated_query.total  # Total number of products
 
+        product_data = product_list_schema.dump(products)
+        for product in product_data:
+            print(product)
+            supplier = Supplier.query.get(product['supplier_id'])
+            product['supplier'] = supplier.name
         # Serialize the data with additional pagination metadata
         return {
-            "products": product_list_schema.dump(products),
+            "products": product_data,
             "total": total_products,
             "page": page,
             "pages": paginated_query.pages,
@@ -130,7 +141,11 @@ class ProductListResource(Resource):
 class ProductResource(Resource):
     def get(self, product_id):
         product = Product.query.get_or_404(product_id)
-        return product_schema.dump(product), 200
+        product_data = product_schema.dump(product)
+        supplier = Supplier.query.get(product_data['supplier_id'])
+        product_data['supplier'] = supplier.name
+
+        return product_data, 200
 
 
     @jwt_required()

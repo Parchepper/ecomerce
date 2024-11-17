@@ -21,6 +21,7 @@ body {
     padding-left: 200px;
     padding-right: 200px;
     
+    
 }
 
 /* Splash Container */
@@ -304,11 +305,14 @@ body {
     overflow: hidden;
     transition: box-shadow 0.3s;
     background-color: #b9b8b0;
+    cursor: grab;
+    
 }
 
 .product-card:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    background-color: #ada4a4;
+    background-color: #d07c15;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .product-image {
@@ -470,6 +474,8 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Search Input */
@@ -511,6 +517,22 @@ body {
     white-space: nowrap;
 }
 
+.filter-btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+
+
+
+
+
 .add-to-cart-button {
     padding: 8px 16px;
     background-color: #007bff;
@@ -526,6 +548,10 @@ body {
     background-color: #0056b3;
 }
 
+.filter-btn1:hover {
+    background-color: #0056b3;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .search-filters {
@@ -538,6 +564,7 @@ body {
 /* Products Grid Adjustments */
 .products-grid {
     margin-top: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive Design for Carousel and Marketing Section */
@@ -601,8 +628,11 @@ body {
     max-width: 1200px;
     padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 10px;
+    border-radius: 60px;
+    box-shadow: 0 4px 8px rgb(255, 128, 0);
+    
 }
+
 
 .product-detail-image {
     width: 50%;
@@ -824,3 +854,137 @@ body {
     }
   }
   
+  #pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the controls */
+    gap: 10px; /* Space between elements */
+    margin-bottom: 20px;
+}
+
+.filter-btn1 {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+#current-page {
+    font-size: 1rem;
+    padding: 0 8px;
+    border: 1px solid #ccc;
+    border-radius: 60px;
+    box-shadow: 0 4p
+    
+    x 8px rgb(255, 128, 0);
+}
+
+/* Slide-out section styles */
+.slide-out {
+    position: fixed;
+    top: 100px;
+    right: -300px; /* Initially hidden off-screen */
+    width: 300px;
+    height: 100%;
+    background-color: #f9f9f9;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+  
+  /* Slide-out content styles */
+  .slide-out-content {
+    padding: 20px;
+  }
+  
+  /* Close button styles */
+  .close-btn {
+    position: absolute;
+    top: 2px;
+    left: 10px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Open button styles */
+  .open-btn {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1001;
+  }
+
+  
+  
+  .product-card:active {
+    cursor: grabbing;
+    opacity: 0.8;
+  }
+  
+  #slide-out-section {
+    border-left: 3px dashed #007bff; /* Visual drop zone indicator */
+  }
+  
+  #product-list li {
+    border: 2px solid #ddd; /* Light gray border */
+    border-radius: 15px; /* Rounded border */
+    padding: 10px;
+    margin: 10px 0;
+    list-style: none;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  #product-list li:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f0f0f0;
+  }
+  
+  .quantity-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .quantity-input {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .remove-btn {
+    background-color: #f44336; /* Red button */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+  
+  .remove-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  /* Grand Total Styles */
+#grand-total-container {
+    margin-top: 20px;
+    text-align: right;
+}
+
+#grand-total {
+    font-size: 18px;
+    font-weight: bold;
+}
