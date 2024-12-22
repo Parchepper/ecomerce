@@ -28,7 +28,9 @@ class ProductListResource(Resource):
 
         # Build the base query
         query = Product.query
-
+        supplier_query = Supplier.query
+        searched_supplier_ids = []
+        searched_suppliers = None
         # If category_ids is not empty, filter using IN
         if category_ids:
             query = query.filter(Product.category_id.in_(category_ids))
@@ -42,13 +44,22 @@ class ProductListResource(Resource):
         if max_price is not None:
             query = query.filter(Product.price <= max_price)
         if search_query:
+
+            supplier_query = supplier_query.filter(Supplier.name.ilike(f'%{search_query}%'))
+            searched_suppliers = supplier_query.all()
+            if searched_suppliers:
+                for supplier in searched_suppliers:
+                    searched_supplier_ids.append(supplier.supplier_id)
             query = query.filter(
                 or_(
                     Product.name.ilike(f'%{search_query}%'),
-                    Product.upc.ilike(f'%{search_query}%')
+                    Product.upc.ilike(f'%{search_query}%'),
+                    Product.supplier_id.in_(searched_supplier_ids)
                 )
             )
 
+        
+ 
         # Apply pagination
         paginated_query = query.paginate(page=page, per_page=limit, error_out=False)
 

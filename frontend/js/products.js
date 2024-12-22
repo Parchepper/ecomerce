@@ -5,7 +5,7 @@ function setupEventListeners() {
         console.log('Search input changed');
         displayProducts();
         updateSupplierFiltersForSearch();
-    }, 500));
+    }, 750));
 
     // document.getElementById('category-filter').addEventListener('change', () => {
     //     console.log('Category changed');
@@ -153,7 +153,7 @@ async function updateSupplierFiltersForSearch() {
     if (maxPrice) {
         params.append('max_price', maxPrice);
     }
-
+    
     // Fetch all relevant suppliers from the API
     const response = await fetch(`${API_BASE_URL}/suppliers?${params.toString()}`);
     const suppliers = await response.json();
@@ -161,7 +161,7 @@ async function updateSupplierFiltersForSearch() {
     // Update supplier filters dynamically
     const supplierFiltersContainer = document.getElementById('supplier-filters');
     supplierFiltersContainer.innerHTML = ''; // Clear existing suppliers
-
+    console.log("Supplise:r", suppliers)
     suppliers.forEach(supplier => {
         const label = document.createElement('label');
         const checkbox = document.createElement('input');

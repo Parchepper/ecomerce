@@ -27,7 +27,8 @@ class SupplierListResource(Resource):
             query = query.filter(
                 or_(
                     Product.name.ilike(f'%{search_query}%'),
-                    Product.upc.ilike(f'%{search_query}%')
+                    Product.upc.ilike(f'%{search_query}%'),
+                    Supplier.name.ilike(f'%{search_query}%')
                 )
             )
         if category_ids:
