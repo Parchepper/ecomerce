@@ -21,8 +21,11 @@ function setupEventListeners() {
         console.log('Filter button clicked');
         displayProducts();
     });
+    const page_num_input = document.getElementById('page_num');
+    page_num_input.addEventListener('change', (e) => {
+        displayProducts(page=page_num_input.value);
+    });
 }
-
 function setupCheckboxListeners() {
     const categoryFiltersContainer = document.getElementById('category-filters');
     const supplierFiltersContainer = document.getElementById('supplier-filters');
@@ -153,7 +156,7 @@ async function updateSupplierFiltersForSearch() {
     if (maxPrice) {
         params.append('max_price', maxPrice);
     }
-    
+
     // Fetch all relevant suppliers from the API
     const response = await fetch(`${API_BASE_URL}/suppliers?${params.toString()}`);
     const suppliers = await response.json();
@@ -348,7 +351,8 @@ async function displayProducts(page = 1) {
     
     
 
-    document.getElementById('current-page').innerText = data.page;
+    document.getElementById('current-page').placeholder = data.page;
+    document.getElementById('total-pages').innerText = data.pages;
     document.getElementById('prev-page').disabled = data.page === 1;
     document.getElementById('next-page').disabled = data.page === data.pages;
 
