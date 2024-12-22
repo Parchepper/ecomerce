@@ -17,9 +17,9 @@ product_list_schema = ProductSchema(many=True)
 
 class ProductListResource(Resource):
     def get(self):
-        # Get query parameters
-        category_id = request.args.get('category_id', type=str)
-        supplier_id = request.args.get('supplier_id', type=str)
+        # Get multiple category IDs and supplier IDs as lists
+        category_ids = request.args.getlist('category_id[]')
+        supplier_ids = request.args.getlist('supplier_id[]')
         min_price = request.args.get('min_price', type=float)
         max_price = request.args.get('max_price', type=float)
         search_query = request.args.get('search', type=str)
@@ -29,37 +29,41 @@ class ProductListResource(Resource):
         # Build the base query
         query = Product.query
 
-        # Apply filters based on query parameters
-        if category_id:
-            query = query.filter(Product.category_id == category_id)
-        if supplier_id:
-            query = query.filter(Product.supplier_id == supplier_id)
+        # If category_ids is not empty, filter using IN
+        if category_ids:
+            query = query.filter(Product.category_id.in_(category_ids))
+
+        # If supplier_ids is not empty, filter using IN
+        if supplier_ids:
+            query = query.filter(Product.supplier_id.in_(supplier_ids))
+
         if min_price is not None:
             query = query.filter(Product.price >= min_price)
         if max_price is not None:
             query = query.filter(Product.price <= max_price)
         if search_query:
-            #query = query.filter(Product.name.ilike(f'%{search_query}%'))
             query = query.filter(
                 or_(
                     Product.name.ilike(f'%{search_query}%'),
                     Product.upc.ilike(f'%{search_query}%')
                 )
             )
-        
 
         # Apply pagination
         paginated_query = query.paginate(page=page, per_page=limit, error_out=False)
-    
+
         products = paginated_query.items  # Items for the current page
         total_products = paginated_query.total  # Total number of products
 
         product_data = product_list_schema.dump(products)
+
+        # Add supplier name to each product
         for product in product_data:
-            print(product)
             supplier = Supplier.query.get(product['supplier_id'])
-            product['supplier'] = supplier.name
-        # Serialize the data with additional pagination metadata
+            if supplier:
+                product['supplier'] = supplier.name
+
+        # Return the JSON response with pagination metadata
         return {
             "products": product_data,
             "total": total_products,

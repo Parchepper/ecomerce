@@ -4,20 +4,36 @@ function setupEventListeners() {
     document.getElementById('search-input').addEventListener('input', debounce(() => {
         console.log('Search input changed');
         displayProducts();
+        updateSupplierFiltersForSearch();
     }, 500));
 
-    document.getElementById('category-filter').addEventListener('change', () => {
-        console.log('Category changed');
-        displayProducts();
-    });
+    // document.getElementById('category-filter').addEventListener('change', () => {
+    //     console.log('Category changed');
+    //     displayProducts();
+    // });
 
-    document.getElementById('supplier-filter').addEventListener('change', () => {
-        console.log('Supplier changed');
-        displayProducts();
-    });
+    // document.getElementById('supplier-filter').addEventListener('change', () => {
+    //     console.log('Supplier changed');
+    //     displayProducts();
+    // });
 
     document.getElementById('filter-btn').addEventListener('click', () => {
         console.log('Filter button clicked');
+        displayProducts();
+    });
+}
+
+function setupCheckboxListeners() {
+    const categoryFiltersContainer = document.getElementById('category-filters');
+    const supplierFiltersContainer = document.getElementById('supplier-filters');
+
+    categoryFiltersContainer.addEventListener('change', () => {
+        console.log('Category checkboxes changed');
+        displayProducts();
+    });
+
+    supplierFiltersContainer.addEventListener('change', () => {
+        console.log('Supplier checkboxes changed');
         displayProducts();
     });
 }
@@ -38,13 +54,33 @@ async function loadCategories() {
     }
 }
 
+// function populateCategoryFilter(categories) {
+//     const categoryFilter = document.getElementById('category-filter');
+//     categories.forEach(category => {
+//         const option = document.createElement('option');
+//         option.value = category.category_id;
+//         option.textContent = category.name;
+//         categoryFilter.appendChild(option);
+//     });
+// }
+
 function populateCategoryFilter(categories) {
-    const categoryFilter = document.getElementById('category-filter');
+    const categoryFiltersContainer = document.getElementById('category-filters');
+    categoryFiltersContainer.innerHTML = '<h3>Categories</h3> <br>'; // Clear any existing content
+
     categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.category_id;
-        option.textContent = category.name;
-        categoryFilter.appendChild(option);
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = category.category_id;
+        checkbox.classList.add('category-checkbox');
+        // You could add a data attribute for convenience if needed
+        // checkbox.setAttribute('data-category-id', category.category_id);
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(` ${category.name}`));
+        categoryFiltersContainer.appendChild(label);
+        categoryFiltersContainer.appendChild(document.createElement('br'));
     });
 }
 
@@ -62,15 +98,93 @@ async function loadSuppliers() {
     }
 }
 
+// function populateSupplierFilter(suppliers) {
+//     const supplierFilter = document.getElementById('supplier-filter');
+//     suppliers.forEach(supplier => {
+//         const option = document.createElement('option');
+//         option.value = supplier.supplier_id;
+//         option.textContent = supplier.name;
+//         supplierFilter.appendChild(option);
+//     });
+// }
+
 function populateSupplierFilter(suppliers) {
-    const supplierFilter = document.getElementById('supplier-filter');
+    const supplierFiltersContainer = document.getElementById('supplier-filters');
+    supplierFiltersContainer.innerHTML = '<h3>Suppliers</h3> <br>' ; // Clear any existing content
+
     suppliers.forEach(supplier => {
-        const option = document.createElement('option');
-        option.value = supplier.supplier_id;
-        option.textContent = supplier.name;
-        supplierFilter.appendChild(option);
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = supplier.supplier_id;
+        checkbox.classList.add('supplier-checkbox');
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(` ${supplier.name}`));
+        supplierFiltersContainer.appendChild(label);
+        supplierFiltersContainer.appendChild(document.createElement('br'));
     });
 }
+//implement this later
+// function updateSupplierFilters(products) {
+    
+// }
+
+async function updateSupplierFiltersForSearch() {
+    const searchQuery = document.getElementById('search-input').value;
+    const minPrice = document.getElementById('min-price').value;
+    const maxPrice = document.getElementById('max-price').value;
+
+    // Collect checked categories
+    const categoryCheckboxes = document.querySelectorAll('.category-checkbox:checked');
+    const categoryIds = Array.from(categoryCheckboxes).map(checkbox => checkbox.value);
+
+    const params = new URLSearchParams();
+
+    if (searchQuery) {
+        params.append('search', searchQuery);
+    }
+    categoryIds.forEach(catId => {
+        params.append('category_id', catId);
+    });
+    if (minPrice) {
+        params.append('min_price', minPrice);
+    }
+    if (maxPrice) {
+        params.append('max_price', maxPrice);
+    }
+
+    // Fetch all relevant suppliers from the API
+    const response = await fetch(`${API_BASE_URL}/suppliers?${params.toString()}`);
+    const suppliers = await response.json();
+
+    // Update supplier filters dynamically
+    const supplierFiltersContainer = document.getElementById('supplier-filters');
+    supplierFiltersContainer.innerHTML = ''; // Clear existing suppliers
+
+    suppliers.forEach(supplier => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = supplier.supplier_id;
+        checkbox.classList.add('supplier-checkbox');
+
+       
+
+        // Attach event listener to the checkbox
+        checkbox.addEventListener('change', () => {
+            displayProducts();
+        });
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(` ${supplier.name}`));
+        supplierFiltersContainer.appendChild(label);
+        supplierFiltersContainer.appendChild(document.createElement('br'));
+    });
+}
+
+
+
 
 
 
@@ -83,36 +197,50 @@ function debounce(func, delay) {
 }
 
 let currentPage = 1;
-const limit = 8 ;
+const limit = 25 ;
 
 async function displayProducts(page = 1) {
     const searchQuery = document.getElementById('search-input').value;
-    const categoryId = document.getElementById('category-filter').value;
-    const supplierId = document.getElementById('supplier-filter').value;
     const minPrice = document.getElementById('min-price').value;
     const maxPrice = document.getElementById('max-price').value;
+
+    // Collect checked categories
+    const categoryCheckboxes = document.querySelectorAll('.category-checkbox:checked');
+    const categoryIds = Array.from(categoryCheckboxes).map(checkbox => checkbox.value);
+
+    // Collect checked suppliers
+    const supplierCheckboxes = document.querySelectorAll('.supplier-checkbox:checked');
+    const supplierIds = Array.from(supplierCheckboxes).map(checkbox => checkbox.value);
 
     const params = new URLSearchParams();
 
     if (searchQuery) {
         params.append('search', searchQuery);
     }
-    if (categoryId) {
-        params.append('category_id', categoryId);
-    }
-    if (supplierId) {
-        params.append('supplier_id', supplierId);
-    }
+    // If multiple categories are selected, you can either append each category_id
+    // or send them as a comma-separated string depending on how your API expects them.
+    // Example: append multiple params
+    if (categoryIds)
+        categoryIds.forEach(catId => {
+        params.append('category_id[]', catId);
+    });
+    if (supplierIds) {
+        console.log("Suppler Ids: ",supplierIds)
+        // Same for suppliers
+        supplierIds.forEach(supId => {
+            params.append('supplier_id[]', supId);
+    });}
+
     if (minPrice) {
         params.append('min_price', minPrice);
     }
     if (maxPrice) {
         params.append('max_price', maxPrice);
     }
-    params.append('page', page)
 
-    params.append('limit', limit)
-                                ;
+    params.append('page', page);
+    params.append('limit', limit);
+    console.log(params.toString());
     const response = await fetch(`${API_BASE_URL}/products?${params.toString()}`);
     const data = await response.json();
 
@@ -123,39 +251,111 @@ async function displayProducts(page = 1) {
     data.products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
-        productCard.draggable=true;
+        productCard.draggable = true;
         productCard.setAttribute("data-id", product.product_id);
         productCard.innerHTML = `
-            <a href="product_detail.html?product_id=${product.product_id}" class="product-link" >
-                <img  src="${product.image_url || 'images/placeholder.png'}" alt="${product.name}" class="product-image"></a>
-                <div  class="product-info">
-                    <h3>${product.name}</h3>
-                    <h3>${product.supplier == "" ? "" : product.supplier }</h3>
-                    <h2>${product.upc== null ? "" : product.upc}</h2>
-                    <!--<p>${product.description}</p>-->
-                    <p class="price">$${product.price}</p>
-                </div>
-            
+            <a href="product_detail.html?product_id=${product.product_id}" class="product-link">
+                <img src="${product.image_url || 'images/placeholder.png'}" alt="${product.name}" class="product-image">
+            </a>
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <h3>${product.supplier || ''}</h3>
+                <h2>${product.upc || ''}</h2>
+                <!--<p>${product.description}</p>-->
+                <p class="price">$${product.price}</p>
+            </div>
             <button class="add-to-cart-button" data-product-id="${product.product_id}">Add to Cart</button>
         `;
-          // Add drag events to product cards
-
+    
+        // Prevent dragging of nested elements like images and links
+        
+    
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let dragImage = null; // Reference to the cloned drag image
+    
         productCard.addEventListener('dragstart', (event) => {
             console.log("Card:", productCard);
             event.dataTransfer.setData('text/plain', productCard.getAttribute("data-id"));
             event.dataTransfer.setData('text/html', productCard.outerHTML);
-            });
-     
-  
-
+    
+            // Clone the product card for the drag image
+            dragImage = productCard.cloneNode(true);
+            const img = dragImage.querySelector("img");
+            console.log("Cloned Image:", img);
+    
+            // Add the 'dragging-image' class to the cloned image
+            img.classList.add("dragging-image");
+    
+            // Style the cloned drag image
+            dragImage.style.position = 'absolute';
+            dragImage.style.top = '-1000px'; // Position off-screen
+            dragImage.style.left = '-1000px';
+            dragImage.style.pointerEvents = 'none'; // Prevent interaction
+            dragImage.style.width = '150px'; // Set desired width
+            dragImage.style.height = 'auto'; // Maintain aspect ratio
+    
+            // Append the drag image to the body
+            document.body.appendChild(dragImage);
+    
+            // Set the custom drag image (centered)
+            event.dataTransfer.setDragImage(dragImage, img.width / 2, img.height / 2);
+    
+            // Add dragging class to the actual card for visual feedback
+            productCard.classList.add('dragging');
+    
+            // Initialize last mouse positions
+            lastMouseX = event.clientX;
+            lastMouseY = event.clientY;
+        });
+    
+        window.addEventListener('mousemove', (event) => {
+            if (!dragImage) return; // Only proceed if dragImage exists
+    
+            const deltaX = event.clientX - lastMouseX;
+            const deltaY = event.clientY - lastMouseY;
+    
+            // Remove all lean classes before adding the new one
+            dragImage.classList.remove('lean-left', 'lean-right', 'lean-up', 'lean-down');
+    
+            // Determine leaning direction based on movement thresholds
+            if (deltaX > 5) dragImage.classList.add('lean-right');
+            else if (deltaX < -5) dragImage.classList.add('lean-left');
+            if (deltaY > 5) dragImage.classList.add('lean-down');
+            else if (deltaY < -5) dragImage.classList.add('lean-up');
+    
+            // Update last mouse position
+            lastMouseX = event.clientX;
+            lastMouseY = event.clientY;
+        });
+    
+        productCard.addEventListener('dragend', () => {
+            productCard.classList.remove('dragging');
+    
+            // Remove the drag image from the DOM
+            if (dragImage) {
+                dragImage.parentNode.removeChild(dragImage);
+                dragImage = null;
+            }
+    
+            // Optionally, reset transformations on the original card
+            productCard.classList.add('reset');
+            setTimeout(() => productCard.classList.remove('reset'), 200); // Allow time for reset animation
+        });
+    
         productsGrid.appendChild(productCard);
     });
+    
+    
 
     document.getElementById('current-page').innerText = data.page;
     document.getElementById('prev-page').disabled = data.page === 1;
     document.getElementById('next-page').disabled = data.page === data.pages;
 
     currentPage = data.page;
+
+    // Update suppliers list dynamically
+   // updateSupplierFilters(data.products);
 
 
     // Add event listeners for "Add to Cart" buttons
@@ -189,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSuppliers();
     loadCategories();
     setupEventListeners();
+    setupCheckboxListeners();
     displayProducts(currentPage);
     
     
@@ -208,25 +409,46 @@ document.addEventListener('DOMContentLoaded', () => {
         slideOutSection.style.right = '-300px'; // Slide out
       });
     
-    const slideOutSection = document.getElementById('slide-out-section');
+      const slideOutSection = document.getElementById('slide-out-section');
 
-    const productList = document.createElement('ul');
-    productList.id = 'product-list';
-    slideOutSection.querySelector('.slide-out-content').appendChild(productList);
-    const grandTotal = document.createElement('div');
-    grandTotal.id = 'grand-total';
-    slideOutSection.querySelector('.slide-out-content').appendChild(grandTotal);
+      // Create the product list
+      const productList = document.createElement('ul');
+      productList.id = 'product-list';
+      slideOutSection.querySelector('.slide-out-content').appendChild(productList);
+      
+      // Create the grand total container
+      const grandTotal = document.createElement('div');
+      grandTotal.id = 'grand-total';
+      grandTotal.textContent = "Grand Total: $0.00";
+      slideOutSection.appendChild(grandTotal);
+      
+      // Create the footer and append it
+      const slideFooter = document.createElement('div');
+      slideFooter.id = "slide-footer";
+      slideFooter.innerHTML = `
+          <button id="checkout-button">Proceed to Checkout</button>
+          <button id="clear-cart-button">Clear Cart</button>
+      `;
+      slideOutSection.appendChild(slideFooter); // Append it as a direct child of the slide-out section
+      
 
           
     // Call loadCart on page load
     loadCart();   
-  
+    
+    // Event listener for clear Cart button and checkout button
+    document.getElementById('clear-cart-button').addEventListener('click', clearCart);
     
     // Add drop events to the slide-out section
     slideOutSection.addEventListener('dragover', (event) => {
     // TODO: awesome pre-drop functionality
+
       event.preventDefault(); // Allow drop
     });
+
+    
+
+    
     
     slideOutSection.addEventListener('drop', (event) => {
     event.preventDefault();
@@ -294,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
     const removeButton = document.createElement('button');
-    removeButton.textContent = 'D';
+    removeButton.textContent = 'Remove';
     removeButton.classList.add('remove-btn'); // Optional: Add a class for styling
     removeButton.addEventListener('click', () => {
     listItem.remove();
@@ -453,6 +675,28 @@ function updateGrandTotal() {
     
 }
 
+function clearCart() {
+    // Get the product list container
+    const productList = document.getElementById('product-list');
+
+    if (productList) {
+        // Remove all child elements
+        while (productList.firstChild) {
+            productList.removeChild(productList.firstChild);
+        }
+    } else {
+        console.error('Error: product-list element not found.');
+        return;
+    }
+
+    // Clear the localStorage data for the cart
+    localStorage.removeItem('cart');
+
+    // Reset the grand total
+    updateGrandTotal();
+}
+
+
 
 
 const productCache = {};
@@ -478,12 +722,8 @@ function preloadProductData(event) {
         });
 }
 
-// Event listeners for slide-cart
-
-
 
   
-   
 
 async function addToCart(event) {
     const productId = event.target.getAttribute('data-product-id');

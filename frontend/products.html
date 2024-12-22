@@ -22,21 +22,21 @@
     <div id="slide-out-section" class="slide-out">
         <button id="close-slide-out" class="close-btn">&times;</button>
         <div class="slide-out-content">
-          <h2>Cart</h2>
+          <h2>Products</h2>
           <div id="slide-out-section" class="slide-out" >
             <button id="close-slide-out" class="close-btn">&times;</button>
             <div class="slide-out-content" >
            
                 <!-- ??? -->
             
-            </div>
+            </div>           
           </div>
           
         </div>
       </div>
       
       <!-- Button to open the slide-out -->
-      <button id="open-slide-out" class="open-btn">Open Slide-Out</button>
+      <button id="open-slide-out" class="open-btn">Quick Cart</button>
       
 
     <div class="main-content">
@@ -89,36 +89,51 @@
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Search and Filters -->
-        <div id="pagination-controls">
+    <div class="page-container">
+  
+        <!-- Fixed Top Bar -->
+        <div class="top-bar">
+          <!-- Left portion: Search + Price Filter -->
+          <div class="search-section">
+            <input type="text" id="search-input" placeholder="Search products..." />
+            <div class="price-filter">
+              <input type="number" id="min-price" placeholder="Min Price" />
+              <input type="number" id="max-price" placeholder="Max Price" />
+              <button id="filter-btn">Filter</button>
+            </div>
+          </div>
+      
+          <!-- Right portion: Pagination Controls -->
+          <div id="pagination-controls">
             <button id="prev-page" class="filter-btn1" onclick="changePage('prev')">Previous</button>
             <span id="current-page">1</span>
             <button id="next-page" class="filter-btn1" onclick="changePage('next')">Next</button>
           </div>
-        <div class="search-filters">
-            <input type="text" id="search-input" placeholder="Search products...">
-            <select id="category-filter">
-                <option value="">All Categories</option>
-                <!-- Categories will be populated dynamically -->
-            </select>
-            <select id="supplier-filter">
-                <option value="">All Suppliers</option>
-                <!-- suppliers will be populated dynamically -->
-            </select>
-            <div class="price-filter">
-                <input type="number" id="min-price" placeholder="Min Price">
-                <input type="number" id="max-price" placeholder="Max Price">
-                <button id="filter-btn">Filter</button>
-            </div>
         </div>
-
-        <!-- Products Grid -->
-        <div class="products-grid" id="products-grid">
+      
+        <!-- Fixed Left Sidebar -->
+        <div class="left-sidebar">
+          <div id="category-filters">
+            <h3>Categories</h3>
+            <!-- Category checkboxes populated dynamically -->
+          </div>
+          <br>
+          <hr>
+          <br>
+          <div id="supplier-filters">
+            <h3>Suppliers</h3>
+            <!-- Supplier checkboxes populated dynamically -->
+          </div>
+        </div>
+      
+        <!-- Main Content Area -->
+        <div class="main-content">
+          <div class="products-grid" id="products-grid">
             <!-- Products will be displayed here -->
+          </div>
         </div>
-    </div>
+      
+      </div>
     
     
     

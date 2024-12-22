@@ -122,7 +122,7 @@ function preloadProfileData(event) {
         });
 }
 
-// main.js
+// Toasty Messages
 
 function showNotification(message, type = 'success') {
     Toastify({
